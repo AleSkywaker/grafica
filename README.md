@@ -1,1 +1,1 @@
-#Gráfica tiempo real
+## Gráfica tiempo real
