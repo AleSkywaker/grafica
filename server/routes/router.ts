@@ -2,7 +2,23 @@ import { Router, Request, Response } from "express";
 import Server from "../classes/server";
 import { usuariosConectados } from "../sockets/socket";
 
+import { GraficaData } from "../classes/grafica";
+
 const router = Router();
+
+const grafica = new GraficaData();
+
+router.get("/grafica", (req: Request, res: Response) => {
+  res.json(grafica.getDataGrafica());
+});
+router.post("/grafica", (req: Request, res: Response) => {
+  const mes = req.body.mes;
+  const valor = Number(req.body.valor);
+
+  grafica.cambiarValor(mes, valor);
+
+  res.json(grafica.getDataGrafica());
+});
 
 router.post("/mensajes", (req: Request, res: Response) => {
   const cuerpo = req.body.cuerpo;
