@@ -17,6 +17,9 @@ router.post("/grafica", (req: Request, res: Response) => {
 
   grafica.cambiarValor(mes, valor);
 
+  const server = Server.instance;
+  server.io.emit("cambio-grafica", grafica.getDataGrafica());
+
   res.json(grafica.getDataGrafica());
 });
 
