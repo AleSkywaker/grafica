@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { WebsocketService } from "src/app/services/websocket.service";
 
 @Component({
   selector: "app-grafica",
@@ -22,10 +23,11 @@ export class GraficaComponent implements OnInit {
   public lineChartOptions: any = {
     responsive: true
   };
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public wsService: WebsocketService) {}
 
   ngOnInit() {
     this.getData();
+    this.escucharSocket();
     // setInterval(() => {
     //   const newData = [
     //     Math.round(Math.random() * 100),
@@ -40,6 +42,13 @@ export class GraficaComponent implements OnInit {
 
   getData() {
     this.http.get("http://localhost:5000/grafica").subscribe((data: any) => {
+      this.lineChartData = data;
+    });
+  }
+
+  escucharSocket() {
+    this.wsService.listen("cambio-grafica").subscribe((data: any) => {
+      console.log("sokcet", data);
       this.lineChartData = data;
     });
   }
